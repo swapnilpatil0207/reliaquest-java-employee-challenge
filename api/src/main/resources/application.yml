@@ -1,2 +1,16 @@
+# Application configuration for the Employee API service
 spring.application.name: employee-api
-server.port: 8111
+
+#Server configuration
+server:
+  port: 8111
+
+# Rate limiting configuration results in 429 responses when limits are exceeded
+resilience4j:
+  retry:
+    instances:
+      employeeApi:
+        maxAttempts: 3
+        waitDuration: PT0.5S
+        retryExceptions:
+          - org.springframework.web.client.HttpClientErrorException$TooManyRequests
